@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">OPLongshot Xposed</string>
+    <string name="hide_icon">隐藏启动器图标</string>
+    <string name="hide_icon_msg">你依旧可以从 XposedInstaller 进入当前界面。</string>
+</resources>
