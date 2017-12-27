@@ -15,7 +15,7 @@
             android:value="true" />
         <meta-data
             android:name="xposeddescription"
-            android:value="A Xposed module for OPLongshot, forces saving screenshot in PNG format." />
+            android:value="Force saving screenshot in PNG format. Compatible with OxygenOS." />
         <meta-data
             android:name="xposedminversion"
             android:value="82" />
