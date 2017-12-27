@@ -2,4 +2,6 @@
     <string name="app_name">OPLongshot Xposed</string>
     <string name="hide_icon">隐藏启动器图标</string>
     <string name="hide_icon_msg">你依旧可以从 XposedInstaller 进入当前界面。</string>
+    <string name="main_description">从 OxygenOS 4.5.0 开始系统截图的格式从 PNG 改成了 JPG，导致了截图画质下降了很多。\n\n该 Xposed 插件将截图的格式改回了 PNG。</string>
+    <string name="feedback_about">反馈：https://github.com/Noisyfox/OPLongshotXposed\n\n欢迎访问我的博客来支持我的作品：https://noisyfox.io</string>
 </resources>

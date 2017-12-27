@@ -2,4 +2,6 @@
     <string name="app_name">OPLongshot Xposed</string>
     <string name="hide_icon">Hide icon from Launcher</string>
     <string name="hide_icon_msg">You could still enter this page from XposedInstaller.</string>
+    <string name="main_description">From OxygenOS 4.5.0, the file format of screenshot changed from PNG to JPG which caused low image quality.\n\nThis Xposed module will bring PNG back to you.</string>
+    <string name="feedback_about">Feedback: https://github.com/Noisyfox/OPLongshotXposed\n\nWelcome to my nest: https://noisyfox.io</string>
 </resources>
