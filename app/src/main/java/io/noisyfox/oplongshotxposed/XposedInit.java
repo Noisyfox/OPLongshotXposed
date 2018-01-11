@@ -8,6 +8,7 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 
 import java.io.OutputStream;
+import java.lang.reflect.Member;
 
 import de.robv.android.xposed.IXposedHookLoadPackage;
 import de.robv.android.xposed.XC_MethodHook;
@@ -26,6 +27,20 @@ public class XposedInit implements IXposedHookLoadPackage {
     private static final String MIME_TYPE_IMAGE_ORIG = "image/jpeg";
     private static final String MIME_TYPE_IMAGE = "image/png";
 
+    private static final Object[][] PARAM_CONSTRUCTOR_SAVEIMAGEINBACKGROUNDTASK = {
+            { // OSS based on android 7.x
+                    Context.class,
+                    "com.oneplus.screenshot.SaveImageInBackgroundData",
+                    NotificationManager.class,
+                    int.class
+            },
+            { // OSS based on android 8.0
+                    Context.class,
+                    "com.oneplus.screenshot.SaveImageInBackgroundData",
+                    NotificationManager.class
+            }
+    };
+
     @Override
     public void handleLoadPackage(final XC_LoadPackage.LoadPackageParam lpparam) throws Throwable {
         final String packageName = lpparam.packageName;
@@ -39,24 +54,31 @@ public class XposedInit implements IXposedHookLoadPackage {
         XposedHelpers.setStaticObjectField(
                 XposedHelpers.findClass("com.oneplus.screenshot.SaveImageInBackgroundTask", lpparam.classLoader),
                 "SCREENSHOT_FILE_NAME_TEMPLATE", SCREENSHOT_FILE_NAME_TEMPLATE);
-        XposedHelpers.findAndHookConstructor("com.oneplus.screenshot.SaveImageInBackgroundTask", lpparam.classLoader,
-                Context.class,
-                "com.oneplus.screenshot.SaveImageInBackgroundData",
-                NotificationManager.class,
-                int.class,
-                new XC_MethodHook() {
-                    @Override
-                    protected void afterHookedMethod(MethodHookParam param) throws Throwable {
-                        XposedBridge.log("[OPLongshot]new SaveImageInBackgroundTask() called!");
+        Member constructor = null;
+        for (Object[] params : PARAM_CONSTRUCTOR_SAVEIMAGEINBACKGROUNDTASK) {
+            try {
+                constructor = XposedHelpers.findConstructorExact("com.oneplus.screenshot.SaveImageInBackgroundTask", lpparam.classLoader, params);
+                break;
+            } catch (NoSuchMethodError ignored) {
+            }
+        }
+        if (constructor == null) {
+            XposedBridge.log("[OPLongshot]Unable to hook com.oneplus.screenshot.SaveImageInBackgroundTask()!");
+        } else {
+            XposedBridge.hookMethod(constructor, new XC_MethodHook() {
+                @Override
+                protected void afterHookedMethod(MethodHookParam param) throws Throwable {
+                    XposedBridge.log("[OPLongshot]new SaveImageInBackgroundTask() called!");
 
-                        String _mImageFileName = (String) XposedHelpers.getObjectField(param.thisObject, "mImageFileName");
-                        String _mImageFilePath = (String) XposedHelpers.getObjectField(param.thisObject, "mImageFilePath");
-                        _mImageFileName = replaceFileName(_mImageFileName);
-                        _mImageFilePath = replaceFileName(_mImageFilePath);
-                        XposedHelpers.setObjectField(param.thisObject, "mImageFileName", _mImageFileName);
-                        XposedHelpers.setObjectField(param.thisObject, "mImageFilePath", _mImageFilePath);
-                    }
-                });
+                    String _mImageFileName = (String) XposedHelpers.getObjectField(param.thisObject, "mImageFileName");
+                    String _mImageFilePath = (String) XposedHelpers.getObjectField(param.thisObject, "mImageFilePath");
+                    _mImageFileName = replaceFileName(_mImageFileName);
+                    _mImageFilePath = replaceFileName(_mImageFilePath);
+                    XposedHelpers.setObjectField(param.thisObject, "mImageFileName", _mImageFileName);
+                    XposedHelpers.setObjectField(param.thisObject, "mImageFilePath", _mImageFilePath);
+                }
+            });
+        }
         XposedHelpers.findAndHookMethod("com.oneplus.screenshot.util.ImageInfo", lpparam.classLoader, "getSuffix",
                 new XC_MethodReplacement() {
                     @Override
