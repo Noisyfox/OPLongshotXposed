@@ -28,13 +28,13 @@ public class XposedInit implements IXposedHookLoadPackage {
     private static final String MIME_TYPE_IMAGE = "image/png";
 
     private static final Object[][] PARAM_CONSTRUCTOR_SAVEIMAGEINBACKGROUNDTASK = {
-            { // OSS based on android 7.x
+            { // OOS based on android 7.x
                     Context.class,
                     "com.oneplus.screenshot.SaveImageInBackgroundData",
                     NotificationManager.class,
                     int.class
             },
-            { // OSS based on android 8.0
+            { // OOS based on android 8.0
                     Context.class,
                     "com.oneplus.screenshot.SaveImageInBackgroundData",
                     NotificationManager.class
