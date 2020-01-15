@@ -43,7 +43,7 @@ public class XposedInit implements IXposedHookLoadPackage {
                     Context.class,
                     "com.oneplus.screenshot.SaveImageInBackgroundData",
                     NotificationManager.class,
-		    boolean.class
+                    boolean.class
             }
     };
 
