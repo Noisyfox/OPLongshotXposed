@@ -49,7 +49,7 @@
         android:layout_marginTop="20dp"
         android:autoLink="all"
         android:gravity="right"
-        android:text="by Noisyfox, Pie patches by Fif_ on XDA."
+        android:text="by Noisyfox, Pie &amp; Android 11 patches by Fif_ on XDA."
         android:textSize="15sp" />
 
     <Space
